@@ -49,14 +49,28 @@ var animate = function() {
         var len = circles.length;
         for (var i = 0; i < len; i++){
             var c = circles[i];
+            var r = parseInt(c.getAttribute("r"));
+            if (r === 2) {
+                vimage.removeChild(c);
+                len = circles.length;
+            }
             var x = parseInt(c.getAttribute("cx"));
             var y = parseInt(c.getAttribute("cy"));
-            if( x<40 || x>(500 - 40)) c.xv=parseInt(-c.xv);
-            if( y<40 || y>(500 - 40)) c.yv=parseInt(-c.yv);
+            if( x<40 || x>(500 - 40)) c.xv = parseInt(-c.xv);
+            if( y<40 || y>(500 - 40)) c.yv = parseInt(-c.yv);
             x += parseInt(c.xv);
             y += parseInt(c.yv);
             c.setAttribute("cx", x);
             c.setAttribute("cy", y);
+            if (x === 250) {
+                r = r/2;
+                c.setAttribute("r", r);
+                var newc = makeCircle(x,y);
+                newc.setAttribute("r", r);
+                newc.xv = parseInt(-c.xv);
+                newc.yc = parseInt(-c.yv);
+                vimage.appendChild(newc);
+            }
         }
         requestID = window.requestAnimationFrame(drawCircles);
     };
